@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../language/app_localizations.dart';
+import '../../theme/assets_extension.dart';
+import '../../theme/color_extension.dart';
+
 extension ContextExt on BuildContext {
   // Navigation - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Future<dynamic> pushName(String routeName, {Object? arguments}) =>
@@ -12,4 +16,19 @@ extension ContextExt on BuildContext {
       Navigator.of(this).pushNamedAndRemoveUntil(routeName, (route) => false);
 
   void pop() => Navigator.of(this).pop();
+
+  // Colors - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  MyColors get color => Theme.of(this).extension<MyColors>()!;
+
+  // Images - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  MyAssets get assets => Theme.of(this).extension<MyAssets>()!;
+
+  // Style - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  TextStyle get textStyle => Theme.of(this).textTheme.displaySmall!;
+
+  // Language - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  String translate(String langKey) {
+    return AppLocalizations.of(this)!.translate(langKey).toString();
+  }
 }
