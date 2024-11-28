@@ -1,6 +1,8 @@
 import 'package:app/core/app/connectivity_controller.dart';
 import 'package:app/core/app/env.variables.dart';
 import 'package:app/core/common/screens/no_network_screen.dart';
+import 'package:app/core/style/fonts/font_family_helper.dart';
+import 'package:app/core/style/fonts/font_weight_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,7 +38,51 @@ class AsrooStoreApp extends StatelessWidget {
               },
               home: Scaffold(
                 appBar: AppBar(title: const Text('Asroo Store')),
-                body: Container(),
+                body: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Asroo Store',
+                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                color: const Color(0XFF247CFF),
+                                fontWeight: FontWeightHelper.bold,
+                                fontFamily: FontFamilyHelper.poppinsEnglish,
+                              ),
+                        ),
+                        Text(
+                          'Asroo Store',
+                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                color: const Color(0XFF247CFF),
+                                fontWeight: FontWeightHelper.bold,
+                              ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'أسرا',
+                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                color: const Color(0XFF247CFF),
+                                fontWeight: FontWeightHelper.bold,
+                                fontFamily: FontFamilyHelper.cairoArabic,
+                              ),
+                        ),
+                        Text(
+                          'أسرا',
+                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                color: const Color(0XFF247CFF),
+                                fontWeight: FontWeightHelper.bold,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
