@@ -1,6 +1,7 @@
 import 'package:app/core/app/connectivity_controller.dart';
 import 'package:app/core/app/env.variables.dart';
 import 'package:app/core/common/screens/no_network_screen.dart';
+import 'package:app/core/routing/app_routes.dart';
 import 'package:app/core/style/fonts/font_family_helper.dart';
 import 'package:app/core/style/fonts/font_weight_helper.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,10 @@ class AsrooStoreApp extends StatelessWidget {
             child: MaterialApp(
               title: 'Asroo Store',
               debugShowCheckedModeBanner: EnvVariable.instance.debugMode,
+              // Routing - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              onGenerateRoute: AppRoutes.onGenerateRoute,
+              initialRoute: AppRoutes.screenOne,
+              // Builder - - - - - - - - - - - - - - - - - - - - - - - - - - -
               builder: (context, widget) {
                 return GestureDetector(
                   onTap: () {
