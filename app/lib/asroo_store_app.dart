@@ -6,9 +6,14 @@ import 'package:app/core/routing/app_routes.dart';
 import 'package:app/core/utils/extensions/context_extension.dart';
 import 'package:app/core/utils/style/fonts/font_weight_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'core/app/cubit/app_cubit.dart';
+import 'core/di/injection_container.dart';
 import 'core/language/app_localizations_setup.dart';
 import 'core/theme/app_theme.dart';
+import 'core/utils/services/shared_pref/pref_keys.dart';
+import 'core/utils/services/shared_pref/shared_pref.dart';
 
 class AsrooStoreApp extends StatelessWidget {
   const AsrooStoreApp({super.key});
@@ -24,35 +29,46 @@ class AsrooStoreApp extends StatelessWidget {
   }
 
   Widget _buildMainApp() {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      child: MaterialApp(
-        title: 'Asroo Store',
-        debugShowCheckedModeBanner: EnvVariable.instance.debugMode,
-        // Routing - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        onGenerateRoute: AppRoutes.onGenerateRoute,
-        initialRoute: AppRoutes.screenOne,
-        // Theming - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        theme: themeDark(),
-        // Localization - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        locale: const Locale('en'),
-        supportedLocales: AppLocalizationsSetup.supportedLocales,
-        localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
-        localeResolutionCallback: AppLocalizationsSetup.localeResolutionCallback,
-        // Builder - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        builder: (context, widget) => GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Scaffold(
-            body: Builder(
-              builder: (context) {
-                ConnectivityController.instance.init();
-                return widget!;
-              },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<AppCubit>()
+            ..changeAppThemeMode(
+              sharedMode: SharedPref().getBoolean(PrefKeys.themeMode),
+            )
+            ..getSavedLanguage(),
+        ),
+      ],
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        child: MaterialApp(
+          title: 'Asroo Store',
+          debugShowCheckedModeBanner: EnvVariable.instance.debugMode,
+          // Routing - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          onGenerateRoute: AppRoutes.onGenerateRoute,
+          initialRoute: AppRoutes.screenOne,
+          // Theming - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          theme: themeDark(),
+          // Localization - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          locale: const Locale('en'),
+          supportedLocales: AppLocalizationsSetup.supportedLocales,
+          localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
+          localeResolutionCallback: AppLocalizationsSetup.localeResolutionCallback,
+          // Builder - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          builder: (context, widget) => GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: Scaffold(
+              body: Builder(
+                builder: (context) {
+                  ConnectivityController.instance.init();
+                  return widget!;
+                },
+              ),
             ),
           ),
+          home: _buildHomeScreen(),
         ),
-        home: _buildHomeScreen(),
       ),
     );
   }
