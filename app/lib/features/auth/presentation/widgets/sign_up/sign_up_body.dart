@@ -5,11 +5,11 @@ import '../../../../../core/language/lang_keys.dart';
 import '../../../../../core/routing/app_routes.dart';
 import '../auth_footer.dart';
 import '../auth_title_and_subtitle.dart';
-import 'login_form.dart';
-import 'theme_and_lang_buttons.dart';
+import '../login/theme_and_lang_buttons.dart';
+import 'sign_up_form.dart';
 
-class LoginBody extends StatelessWidget {
-  const LoginBody({
+class SignUpBody extends StatelessWidget {
+  const SignUpBody({
     super.key,
   });
 
@@ -19,13 +19,13 @@ class LoginBody extends StatelessWidget {
       children: [
         const ThemeAndLangButtons(),
         AuthTitleAndSubtitle(
-          title: context.translate(LangKeys.login),
-          subtitle: context.translate(LangKeys.welcome),
+          title: context.translate(LangKeys.signUp),
+          subtitle: context.translate(LangKeys.signUpWelcome),
         ),
-        const LoginForm(),
+        const SignUpForm(),
         AuthFooter(
-          footerText: LangKeys.youHaveAccount,
-          onPressed: () => context.pushName(AppRoutes.login),
+          footerText: LangKeys.createAccount,
+          onPressed: () => context.pushReplacementNamed(AppRoutes.signUp),
         ),
       ],
     );
