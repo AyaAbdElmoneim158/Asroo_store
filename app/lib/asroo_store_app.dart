@@ -47,7 +47,7 @@ class AsrooStoreApp extends StatelessWidget {
           debugShowCheckedModeBanner: EnvVariable.instance.debugMode,
           // Routing - - - - - - - - - - - - - - - - - - - - - - - - - - -
           onGenerateRoute: AppRoutes.onGenerateRoute,
-          initialRoute: AppRoutes.screenOne,
+          initialRoute: AppRoutes.login,
           // Theming - - - - - - - - - - - - - - - - - - - - - - - - - - -
           theme: themeDark(),
           // Localization - - - - - - - - - - - - - - - - - - - - - - - - - - -
