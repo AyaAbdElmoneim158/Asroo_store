@@ -1,14 +1,10 @@
-import 'package:app/core/common/widgets/custom_text_field.dart';
-import 'package:app/core/utils/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../../core/common/widgets/custom_linear_button.dart';
-import '../../../../../core/common/widgets/text_app.dart';
-import '../../../../../core/language/lang_keys.dart';
-import '../../../../../core/utils/animation/animate_do.dart';
-import '../../../../../core/utils/app_regex.dart';
-import '../../../../../core/utils/style/fonts/font_weight_helper.dart';
+import '../../bloc/auth_bloc.dart';
+import 'email_field.dart';
+import 'login_button.dart';
+import 'password_field.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -18,87 +14,37 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool isShowPassword = true;
+  late AuthBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = context.read<AuthBloc>();
+  }
+
+  @override
+  void dispose() {
+    _bloc.emailController.dispose();
+    _bloc.passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: _bloc.formKey,
       child: Column(
         children: [
-          _buildEmailField(context),
+          const EmailField(),
           SizedBox(height: 25.h),
-          _buildPasswordField(context),
+          PasswordField(
+            controller: _bloc.passwordController,
+            toggleVisibility: () => setState(() {}),
+          ),
           SizedBox(height: 25.h),
-          _buildLoginButton(context),
+          const LoginButton(),
         ],
       ),
     );
-  }
-
-  CustomLinearButton _buildLoginButton(BuildContext context) {
-    return CustomLinearButton(
-      onPressed: () {},
-      height: 50.h,
-      width: MediaQuery.of(context).size.width,
-      child: TextApp(
-        text: context.translate(LangKeys.login),
-        theme: context.textStyle.copyWith(
-          fontSize: 18.sp,
-          fontWeight: FontWeightHelper.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEmailField(BuildContext context) {
-    return CustomFadeInRight(
-      duration: 200,
-      child: CustomTextField(
-        controller: emailController,
-        hintText: context.translate(LangKeys.email),
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) {
-          if (!AppRegex.isEmailValid(value ?? '')) {
-            return context.translate(LangKeys.validEmail);
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildPasswordField(BuildContext context) {
-    return CustomFadeInRight(
-      duration: 200,
-      child: CustomTextField(
-        controller: passwordController,
-        hintText: context.translate(LangKeys.password),
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: isShowPassword,
-        validator: (value) {
-          if (!AppRegex.isPasswordValid(value ?? '')) {
-            return context.translate(LangKeys.validPassword);
-          }
-          return null;
-        },
-        suffixIcon: IconButton(
-          onPressed: _togglePasswordVisibility,
-          icon: Icon(
-            isShowPassword ? Icons.visibility_off : Icons.visibility,
-            color: context.color.textColor,
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _togglePasswordVisibility() {
-    setState(() {
-      isShowPassword = !isShowPassword;
-    });
   }
 }

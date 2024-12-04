@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/app/bloc_observer.dart';
+import 'core/di/injection_container.dart';
 import 'core/utils/services/shared_pref/shared_pref.dart';
 
 void main() async {
@@ -16,6 +17,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await SharedPref().instantiatePreferences();
+  await setupInjector();
   Bloc.observer = AppBlocObserver();
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp],
