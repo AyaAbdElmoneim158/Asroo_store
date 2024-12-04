@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,6 +10,7 @@ part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(const AppState.initial());
+  static AppCubit of(BuildContext context) => BlocProvider.of<AppCubit>(context);
 
   bool isDark = true;
   String currentLangCode = 'en';

@@ -42,32 +42,38 @@ class AsrooStoreApp extends StatelessWidget {
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,
-        child: MaterialApp(
-          title: 'Asroo Store',
-          debugShowCheckedModeBanner: EnvVariable.instance.debugMode,
-          // Routing - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          onGenerateRoute: AppRoutes.onGenerateRoute,
-          initialRoute: AppRoutes.screenOne,
-          // Theming - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          theme: themeDark(),
-          // Localization - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          locale: const Locale('en'),
-          supportedLocales: AppLocalizationsSetup.supportedLocales,
-          localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
-          localeResolutionCallback: AppLocalizationsSetup.localeResolutionCallback,
-          // Builder - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          builder: (context, widget) => GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: Scaffold(
-              body: Builder(
-                builder: (context) {
-                  ConnectivityController.instance.init();
-                  return widget!;
-                },
+        child: BlocBuilder<AppCubit, AppState>(
+          buildWhen: (previous, current) => previous != current,
+          builder: (context, state) {
+            final appCubit = AppCubit.of(context);
+            return MaterialApp(
+              title: 'Asroo Store',
+              debugShowCheckedModeBanner: EnvVariable.instance.debugMode,
+              // Routing - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              onGenerateRoute: AppRoutes.onGenerateRoute,
+              initialRoute: AppRoutes.login,
+              // Theming - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              theme: appCubit.isDark ? themeLight() : themeDark(),
+              // Localization - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              locale: Locale(appCubit.currentLangCode),
+              supportedLocales: AppLocalizationsSetup.supportedLocales,
+              localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
+              localeResolutionCallback: AppLocalizationsSetup.localeResolutionCallback,
+              // Builder - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              builder: (context, widget) => GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: Scaffold(
+                  body: Builder(
+                    builder: (context) {
+                      ConnectivityController.instance.init();
+                      return widget!;
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-          home: _buildHomeScreen(),
+              home: _buildHomeScreen(),
+            );
+          },
         ),
       ),
     );
