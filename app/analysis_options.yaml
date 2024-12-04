@@ -8,3 +8,4 @@ linter:
     lines_longer_than_80_chars: false
     always_use_package_imports: false
     sort_pub_dependencies: false
+    one_member_abstracts: false
